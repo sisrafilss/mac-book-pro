@@ -21,15 +21,24 @@ function getPrice(priceId) {
     return price;
 }
 
-// Calculate Total Price
+// display total and grand total price
+function displayTotal(totalId, amount) {
+    const totalPriceField = document.getElementById(totalId);
+    totalPriceField.innerHTML = amount;
+}
+
+// Calculate & update Total Price
 function calcTotalPrice() {
     const bestPrice = getPrice('best-price');
     const extraMemoryCost = getPrice('extra-memory-cost');
     const extraStorageCost = getPrice('extra-storage-cost');
     const deliveryCost = getPrice('delivery-cost');
     const totalPrice = bestPrice + extraMemoryCost + extraStorageCost + deliveryCost;
-    const totalPriceField = document.getElementById('total-price');
-    totalPriceField.innerHTML = totalPrice;
+    // Displaying total price
+    displayTotal('total-price', totalPrice);
+    // Graqnd total
+    displayTotal('grand-total', totalPrice);
+    return totalPrice;
 }
 
 
@@ -67,4 +76,23 @@ document.getElementById('delivery-noraml').addEventListener('click', function() 
 // Argent Delivery
 document.getElementById('delivery-argent').addEventListener('click', function() {
     updatePrice('delivery-cost', 20);
+});
+
+
+/* **************** PROMO CODE BUTTON ****************** */
+// promo code button
+document.getElementById('promo-code-btn').addEventListener('click', function() {
+    const promoCodeInput = document.getElementById('promo-code-input');
+    // Checking promo code
+    if (promoCodeInput.value.toLowerCase() == 'stevekaku') {
+        const totalPrice = calcTotalPrice();
+        const discount = totalPrice * 0.2; // 20% discount
+        const discountPrice = totalPrice - discount;
+        document.getElementById('grand-total').innerHTML = discountPrice;
+    }
+    else {
+        console.log('Invalid promo code!');
+    }
+    // Reset promocode
+    promoCodeInput.value = '';
 });
